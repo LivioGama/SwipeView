@@ -126,6 +126,10 @@
     _scrollOffset = 0.0f;
     _currentItemIndex = 0;
     _numberOfItems = 0;
+    _enableMagnifyingEffect = YES;
+    _zoomMarginThreshold = 150;
+    _minScale = 0.8;
+    _maxScale = 1.0;
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap:)];
     tapGesture.delegate = self;
@@ -549,6 +553,17 @@
         view.bounds = CGRectMake(0.0f, 0.0f, _itemSize.width, _itemSize.height);
         
         if (disableAnimation && animationEnabled) [UIView setAnimationsEnabled:YES];
+
+        if (_enableMagnifyingEffect) {
+            CGFloat xOffsetMiddle = _scrollView.contentOffset.x + CGRectGetWidth(_scrollView.frame) / 2;
+            CGRect selectedCellFrame = CGRectMake(xOffsetMiddle - _zoomMarginThreshold, 0, _zoomMarginThreshold * 2, CGRectGetHeight(self.bounds));
+            if (view.center.x > CGRectGetMinX(selectedCellFrame) && view.center.x < CGRectGetMaxX(selectedCellFrame)) {
+                CGFloat scale = (float) (_minScale + (_zoomMarginThreshold - fabs(view.center.x - xOffsetMiddle)) / _zoomMarginThreshold * (_maxScale - _minScale));
+                view.transform = CGAffineTransformMakeScale(scale, scale);
+            } else {
+                view.transform = CGAffineTransformMakeScale(_minScale, _minScale);
+            }
+        }
     }
 }
 

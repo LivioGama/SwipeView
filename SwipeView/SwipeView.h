@@ -85,6 +85,10 @@ typedef NS_ENUM(NSUInteger, SwipeViewAlignment)
 @property (nonatomic, readonly, getter = isScrolling) BOOL scrolling;
 @property (nonatomic, assign) BOOL defersItemViewLoading;
 @property (nonatomic, assign, getter = isVertical) BOOL vertical;
+@property (nonatomic, assign, getter=isMagnifyingEffectEnabled) BOOL enableMagnifyingEffect;
+@property (nonatomic, assign) CGFloat zoomMarginThreshold;
+@property (nonatomic, assign) CGFloat minScale;
+@property (nonatomic, assign) CGFloat maxScale;
 
 - (void)reloadData;
 - (void)reloadItemAtIndex:(NSInteger)index;
