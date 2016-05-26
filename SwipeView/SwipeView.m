@@ -560,8 +560,14 @@
             if (view.center.x > CGRectGetMinX(selectedCellFrame) && view.center.x < CGRectGetMaxX(selectedCellFrame)) {
                 CGFloat scale = (float) (_minScale + (_zoomMarginThreshold - fabs(view.center.x - xOffsetMiddle)) / _zoomMarginThreshold * (_maxScale - _minScale));
                 view.transform = CGAffineTransformMakeScale(scale, scale);
+                if ([_delegate respondsToSelector:@selector(swipeView:didScaleView:withScale:)]) {
+                    [_delegate swipeView:self didScaleView:view withScale:scale];
+                }
             } else {
                 view.transform = CGAffineTransformMakeScale(_minScale, _minScale);
+                if ([_delegate respondsToSelector:@selector(swipeView:didScaleView:withScale:)]) {
+                    [_delegate swipeView:self didScaleView:view withScale:_minScale];
+                }
             }
         }
     }
